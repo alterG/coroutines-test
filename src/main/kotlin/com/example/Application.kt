@@ -1,17 +1,23 @@
 package com.example
 
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 
 fun main() = runBlocking {
-    launch {
-        printSecondPart()
-    }
-    print("Hello, Igor, ")
+    printHello()
+    println("printHello() is finished")
 }
 
-private suspend fun printSecondPart() {
-    delay(1000L)
-    print("from Coroutine.")
+suspend fun printHello() = coroutineScope {
+    val launch1 = launch {
+        delay(2000L)
+        println("I am second")
+    }
+    val launch2 = launch {
+        delay(1000L)
+        println("I am first")
+    }
+    println("I am before all")
+    launch1.join()
+    println("I am last in printHello()")
 }
+
